@@ -160,11 +160,11 @@ def read_json_file(filepath):
         logging.error(f"Unexpected error reading {filepath}: {str(e)}")
         return None
         
-# Usage example
-data = read_json_file('config.json')
-if data is not None:
-    # Process your data here
-    print(data)
+# Usage example (not executed - just for illustration)
+# data = read_json_file('config.json')
+# if data is not None:
+#     # Process your data here
+#     print(data)
 ```
 
 This implementation includes proper error handling for common issues and uses the context manager pattern for file handling. The encoding parameter ensures consistent UTF-8 handling across different platforms.
