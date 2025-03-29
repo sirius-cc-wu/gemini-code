@@ -137,7 +137,7 @@ import json
 import logging
 
 def read_json_file(filepath):
-    """
+    \"""
     Read and parse a JSON file safely.
     
     Args:
@@ -146,7 +146,7 @@ def read_json_file(filepath):
     Returns:
         dict/list: Parsed JSON data
         None: If file cannot be read or parsed
-    """
+    \"""
     try:
         with open(filepath, 'r', encoding='utf-8') as file:
             return json.load(file)
