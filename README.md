@@ -10,8 +10,9 @@ A powerful AI coding assistant for your terminal, powered by Gemini 2.5 Pro with
 - Markdown rendering in the terminal
 - Automatic tool usage by the assistant:
   - File operations (view, edit, list, grep, glob)
+  - Directory operations (ls, tree, create_directory)
   - System commands (bash)
-  - Web content fetching
+  - Quality checks (linting, formatting)
   - Test running capabilities (pytest, etc.)
 
 ## Installation

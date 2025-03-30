@@ -16,7 +16,6 @@ src/gemini_cli/tools/system_tools.py
 src/gemini_cli/tools/task_complete_tool.py
 src/gemini_cli/tools/test_runner.py
 src/gemini_cli/tools/tree_tool.py
-src/gemini_cli/tools/web_tools.py
 src/gemini_code.egg-info/PKG-INFO
 src/gemini_code.egg-info/SOURCES.txt
 src/gemini_code.egg-info/dependency_links.txt

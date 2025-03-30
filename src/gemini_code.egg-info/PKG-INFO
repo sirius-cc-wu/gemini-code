@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: gemini-code
-Version: 0.1.97
+Version: 0.1.98
 Summary: An AI coding assistant CLI using Google's Gemini models with function calling.
 Author-email: Raiza Martin <raiza@huxe.ai>
 License-Expression: MIT
@@ -33,11 +33,21 @@ A powerful AI coding assistant for your terminal, powered by Gemini 2.5 Pro with
 - Markdown rendering in the terminal
 - Automatic tool usage by the assistant:
   - File operations (view, edit, list, grep, glob)
+  - Directory operations (ls, tree, create_directory)
   - System commands (bash)
-  - Web content fetching
+  - Quality checks (linting, formatting)
   - Test running capabilities (pytest, etc.)
 
 ## Installation
+
+### Method 1: Install from PyPI (Recommended)
+
+```bash
+# Install directly from PyPI
+pip install gemini-code
+```
+
+### Method 2: Install from Source
 
 ```bash
 # Clone the repository
