@@ -22,7 +22,7 @@ class Config:
         if not self.config_file.exists():
             default_config = {
                 "api_keys": {},
-                "default_model": "gemini-2.5-pro",
+                "default_model": "models/gemini-2.5-pro-exp-03-25",
                 "settings": {
                     "max_tokens": 1000000,
                     "temperature": 0.7,

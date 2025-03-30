@@ -1,26 +1,42 @@
 [build-system]
-requires = ["setuptools>=42", "wheel"]
+requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "gemini-code"
-version = "0.1.3"
-description = "CLI tool for interacting with Gemini 2.5 Pro"
+name = "gemini-code" 
+version = "0.1.96"  
+authors = [
+  { name="Raiza Martin", email="raiza@huxe.ai" }
+]
+description = "An AI coding assistant CLI using Google's Gemini models with function calling."
 readme = "README.md"
-requires-python = ">=3.8"
-license = {text = "MIT"}
+requires-python = ">=3.9" # Gemini library might require newer Python
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development",
+    "Topic :: Utilities",
+]
 dependencies = [
-    "click>=8.0.0",
-    "rich>=10.0.0",
-    "google-generativeai>=0.3.0",
-    "pyyaml>=6.0",
-    "tiktoken>=0.4.0",
-    "requests>=2.25.0",
-    "html2text>=2020.1.16",
+    "google-generativeai>=0.5.0", # <<< ADDED/UPDATED GEMINI LIBRARY
+    "click>=8.0",              # For CLI framework
+    "rich>=13.0",             # For nice terminal output
+    "PyYAML>=6.0",            # For config handling
+    "tiktoken>=0.6.0",          # <-- ADDED TIKTOKEN DEPENDENCY
+    # Add any other direct dependencies your tools might have (e.g., requests for web_tools)
 ]
 
+[project.urls]
+"Homepage" = "https://github.com/raizamartin/gemini-code"
+"Bug Tracker" = "https://github.com/raizamartin/gemini-code/issues"
+
+# This makes the `gemini` command run the `cli` function in `main.py`
 [project.scripts]
 gemini = "gemini_cli.main:cli"
 
-[tool.setuptools]
-package-dir = {"" = "src"}
+[tool.setuptools.packages.find]
+where = ["src"]  # look for packages in src/

@@ -33,31 +33,33 @@ class BashTool(BaseTool):
                 if banned in command.split():
                     return f"Error: The command '{banned}' is not allowed for security reasons."
             
-            # Convert timeout to seconds
-            timeout_sec = int(timeout) / 1000
+            # Convert timeout to seconds (with better error handling)
+            try:
+                timeout_sec = int(timeout) / 1000
+            except ValueError:
+                # If timeout can't be converted to int, use default
+                timeout_sec = 30
             
-            # Create a temporary directory for the command
-            with tempfile.TemporaryDirectory() as temp_dir:
-                process = subprocess.Popen(
-                    command,
-                    shell=True,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                    text=True,
-                    cwd=temp_dir
-                )
+            # Remove the temporary directory context
+            process = subprocess.Popen(
+                command,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+            )
+            
+            try:
+                stdout, stderr = process.communicate(timeout=timeout_sec)
                 
-                try:
-                    stdout, stderr = process.communicate(timeout=timeout_sec)
-                    
-                    if process.returncode != 0:
-                        return f"Command exited with status {process.returncode}\n\nSTDOUT:\n{stdout}\n\nSTDERR:\n{stderr}"
-                    
-                    return stdout
+                if process.returncode != 0:
+                    return f"Command exited with status {process.returncode}\n\nSTDOUT:\n{stdout}\n\nSTDERR:\n{stderr}"
                 
-                except subprocess.TimeoutExpired:
-                    process.kill()
-                    return f"Error: Command timed out after {timeout_sec} seconds"
+                return stdout
+            
+            except subprocess.TimeoutExpired:
+                process.kill()
+                return f"Error: Command timed out after {timeout_sec} seconds"
         
         except Exception as e:
             return f"Error executing command: {str(e)}"
