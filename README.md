@@ -16,6 +16,15 @@ A powerful AI coding assistant for your terminal, powered by Gemini 2.5 Pro with
 
 ## Installation
 
+### Method 1: Install from PyPI (Recommended)
+
+```bash
+# Install directly from PyPI
+pip install gemini-code
+```
+
+### Method 2: Install from Source
+
 ```bash
 # Clone the repository
 git clone https://github.com/raizamartin/gemini-code.git
