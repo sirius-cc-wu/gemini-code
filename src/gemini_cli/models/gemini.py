@@ -1,7 +1,5 @@
 """
 Gemini model integration for the CLI tool.
-Using Native Function Calling, Planning Prompt, Persistent History.
-Refactored agent loop based on native function calling API. Prompt v13.
 """
 
 import google.generativeai as genai
@@ -18,20 +16,16 @@ from google.api_core.exceptions import ResourceExhausted
 
 from ..utils import count_tokens
 from ..tools import get_tool, AVAILABLE_TOOLS
-# Assuming SummarizeCodeTool might be used directly or indirectly later
-# from ..tools.summarizer_tool import SummarizeCodeTool
 
 # Setup logging (basic config, consider moving to main.py)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s')
 log = logging.getLogger(__name__)
 
-# REMOVED: TOOL_CALL_PATTERN, TASK_COMPLETE_PATTERN (no longer needed for parsing)
 MAX_AGENT_ITERATIONS = 10
 FALLBACK_MODEL = "gemini-1.5-pro-latest"
 CONTEXT_TRUNCATION_THRESHOLD_TOKENS = 800000 # Example token limit
 
 def list_available_models(api_key):
-    # ... (Remains the same) ...
     try:
         genai.configure(api_key=api_key)
         models = genai.list_models()
@@ -66,7 +60,7 @@ class GeminiModel:
         self.gemini_tools = Tool(function_declarations=self.function_declarations) if self.function_declarations else None
         # ---
 
-        # --- System Prompt (v13 - Native Functions & Planning) ---
+        # --- System Prompt (Native Functions & Planning) ---
         self.system_instruction = self._create_system_prompt()
         # ---
 

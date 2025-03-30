@@ -6,7 +6,7 @@ A powerful AI coding assistant for your terminal, powered by Gemini 2.5 Pro with
 
 - Interactive chat sessions in your terminal
 - Multiple model support (Gemini 2.5 Pro, Gemini 1.5 Pro, and more)
-- Intelligent context management with auto-compaction warnings and the `/compact` command
+- Basic history management (prevents excessive length)
 - Markdown rendering in the terminal
 - Automatic tool usage by the assistant:
   - File operations (view, edit, list, grep, glob)
@@ -56,7 +56,6 @@ During an interactive session, you can use these commands:
 
 - `/exit` - Exit the chat session
 - `/help` - Display help information
-- `/compact` - Summarize the conversation to reduce token usage
 
 ## How It Works
 
@@ -69,16 +68,6 @@ Unlike direct command-line tools, the Gemini CLI's tools are used automatically 
 3. The assistant provides you with a formatted response
 
 This approach makes the interaction more natural and similar to how Claude Code works.
-
-### Context Management
-
-Gemini CLI intelligently manages the conversation context:
-
-1. **Warning Threshold (80%)**: When you reach 80% of the token limit, you'll see a warning panel suggesting to use `/compact`
-2. **Auto-Compact Prompt (95%)**: At 95% of the limit, the CLI will ask if you want to automatically compact the conversation
-3. **Manual Compaction**: You can use `/compact` at any time to summarize the conversation and reduce token usage
-
-The summarization process preserves important context while significantly reducing token count, allowing for virtually unlimited conversation length.
 
 ## Development
 
@@ -95,7 +84,7 @@ This project is under active development. More models and features will be added
 ### Recent Changes in v0.1.21
 
 - Implemented native Gemini function calling for much more reliable tool usage
-- Rewrote the tool execution system to use Gemini's built-in function calling capability
+- Rewritten the tool execution system to use Gemini's built-in function calling capability
 - Enhanced the edit tool to better handle file creation and content updating
 - Updated system prompt to encourage function calls instead of text-based tool usage
 - Fixed issues with Gemini not actively creating or modifying files

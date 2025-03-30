@@ -46,11 +46,11 @@ Your API key is stored securely in `~/.config/gemini-code/config.yaml`.
 ### Starting a Session
 
 ```bash
-# Start with default model (Gemini 2.5 Pro)
+# Start with default model (e.g., Gemini 2.5 Pro Experimental)
 gemini
 
 # Start with a specific model
-gemini --model gemini-2.5-pro
+gemini --model gemini-1.5-pro-latest # Or another available model
 ```
 
 ### Available Commands
@@ -59,23 +59,14 @@ During an interactive session, you can use these commands:
 
 - `/help` - Display help information
 - `/exit` - Exit the chat session
-- `/compact` - Summarize the conversation to reduce token usage
 
 ### Configuration Options
 
 Set your default model:
 
 ```bash
-gemini set-default-model gemini-2.5-pro
+gemini set-default-model gemini-1.5-pro-latest # Or your preferred default
 ```
-
-## Understanding Context Management
-
-Gemini Code manages your conversation context intelligently:
-
-1. You'll receive a warning when approaching 80% of the token limit
-2. At 95% of the limit, you'll be asked if you want to automatically compact the conversation
-3. You can manually compact anytime with `/compact`
 
 ## Where Files Are Stored
 
