@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: gemini-code
-Version: 0.1.102
+Version: 0.1.106
 Summary: An AI coding assistant CLI using Google's Gemini models with function calling.
 Author-email: Raiza Martin <raiza@huxe.ai>
 License-Expression: MIT
@@ -20,10 +20,12 @@ Requires-Dist: click>=8.0
 Requires-Dist: rich>=13.0
 Requires-Dist: PyYAML>=6.0
 Requires-Dist: tiktoken>=0.6.0
+Requires-Dist: questionary>=2.0.0
 
 # Gemini Code
 
 A powerful AI coding assistant for your terminal, powered by Gemini 2.5 Pro with support for other LLM models.
+More information [here](https://blossom-tarsier-434.notion.site/Gemini-Code-1c6c13716ff180db86a0c7f4b2da13ab?pvs=4)
 
 ## Features
 

@@ -162,12 +162,16 @@ class GeminiModel:
                 llm_response = None
                 try:
                     logging.info(f"Sending request to LLM ({self.current_model_name}). History length: {len(self.chat_history)} turns.")
-                    # Pass the available tools to the generate_content call
-                    llm_response = self.model.generate_content(
-                        self.chat_history,
-                        generation_config=self.generation_config,
-                        tools=[self.gemini_tools] if self.gemini_tools else None
-                    )
+                    # === ADD STATUS FOR LLM CALL ===
+                    with self.console.status(f"[yellow]Assistant thinking ({self.current_model_name})...", spinner="dots"):
+                        # Pass the available tools to the generate_content call
+                        llm_response = self.model.generate_content(
+                            self.chat_history,
+                            generation_config=self.generation_config,
+                            tools=[self.gemini_tools] if self.gemini_tools else None
+                        )
+                    # === END STATUS ===
+                    
                     # === START DEBUG LOGGING ===
                     log.debug(f"RAW Gemini Response Object (Iter {iteration_count}): {llm_response}")
                     # === END DEBUG LOGGING ===
@@ -499,7 +503,7 @@ Workflow:
 5.  **Complete:** Once the *entire* task is finished, **you MUST call the `task_complete` function**, providing a concise summary of what was done in the `summary` argument. 
     *   The `summary` argument MUST accurately reflect the final outcome (success, partial success, error, or what was done).
     *   Format the summary using **Markdown** for readability (e.g., use backticks for filenames `like_this.py` or commands `like this`).
-    *   If code was generated or modified, the summary SHOULD include concise instructions on how to run or test it (e.g., necessary commands in Markdown code blocks).
+    *   If code was generated or modified, the summary **MUST** contain the **actual, specific commands** needed to run or test the result (e.g., show `pip install Flask` and `python app.py`, not just say "instructions provided"). Use Markdown code blocks for commands.
 
 Important Rules:
 *   **Use Native Functions:** ONLY interact with tools by making function calls as defined above. Do NOT output tool calls as text (e.g., `cli_tools.ls(...)`).
@@ -516,7 +520,7 @@ Important Rules:
 *   **Task Completion Signal:** ALWAYS finish action-oriented tasks by calling `task_complete(summary=...)`. 
     *   The `summary` argument MUST accurately reflect the final outcome (success, partial success, error, or what was done).
     *   Format the summary using **Markdown** for readability (e.g., use backticks for filenames `like_this.py` or commands `like this`).
-    *   If code was generated or modified, the summary SHOULD include concise instructions on how to run or test it (e.g., necessary commands in Markdown code blocks).
+    *   If code was generated or modified, the summary **MUST** contain the **actual, specific commands** needed to run or test the result (e.g., show `pip install Flask` and `python app.py`, not just say "instructions provided"). Use Markdown code blocks for commands.
 
 The user's first message will contain initial directory context and their request."""
 

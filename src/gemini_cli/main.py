@@ -168,7 +168,7 @@ def start_interactive_session(model_name: str, console: Console):
             if response_text is None and user_input.startswith('/'): console.print(f"[yellow]Unknown command:[/yellow] {user_input}"); continue
             elif response_text is None: console.print("[red]Received an empty response from the model.[/red]"); log.warning("generate() returned None unexpectedly."); continue
 
-            console.print("[bold green]Assistant:[/bold green]")
+            console.print("[bold medium_purple]Gemini:[/bold medium_purple]")
             console.print(Markdown(response_text), highlight=True)
 
         except KeyboardInterrupt:
