@@ -1,6 +1,7 @@
 # Gemini Code
 
 A powerful AI coding assistant for your terminal, powered by Gemini 2.5 Pro with support for other LLM models.
+More information [here](https://blossom-tarsier-434.notion.site/Gemini-Code-1c6c13716ff180db86a0c7f4b2da13ab?pvs=4)
 
 ## Features
 
