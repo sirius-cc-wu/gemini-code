@@ -308,14 +308,14 @@ class GeminiModel:
                                     log.error(f"Error executing tool '{tool_name}' with args {tool_args}: {tool_exec_error}", exc_info=True)
                                     tool_result = f"Error executing tool {tool_name}: {str(tool_exec_error)}"
                                     tool_error = True
-                        
-                        # Display result/error only if tool was attempted
-                        if not user_rejected:
-                            if tool_error:
-                                self.console.print(f"[red] -> Error executing {tool_name}: {str(tool_result)[:100]}...[/red]")
-                            else:
-                                self.console.print(f"[dim] -> Executed {tool_name}[/dim]")
-
+                                
+                                # --- Print Executed/Error INSIDE the status block ---
+                                if tool_error:
+                                    self.console.print(f"[red] -> Error executing {tool_name}: {str(tool_result)[:100]}...[/red]")
+                                else:
+                                    self.console.print(f"[dim] -> Executed {tool_name}[/dim]") 
+                            # --- End Status Block ---
+                                
                         # === Check for Task Completion Signal via Tool Call ===
                         if tool_name == "task_complete":
                             log.info("Task completion signaled by 'task_complete' function call.")
@@ -506,9 +506,14 @@ Important Rules:
 *   **Sequential Calls:** Call functions one at a time. You will get the result back before deciding the next step. Do not try to chain calls in one turn.
 *   **Initial Context Handling:** When the user asks a general question about the codebase contents (e.g., "what's in this directory?", "show me the files", "whats in this codebase?"), your **first** response MUST be a summary or list of **ALL** files and directories provided in the initial context (`ls` or `tree` output). Do **NOT** filter this initial list or make assumptions (e.g., about virtual environments). Only after presenting the full initial context should you suggest further actions or use other tools if necessary.
 *   **Accurate Context Reporting:** When asked about directory contents (like "whats in this codebase?"), accurately list or summarize **all** relevant files and directories shown in the `ls` or `tree` output, including common web files (`.html`, `.js`, `.css`), documentation (`.md`), configuration files, build artifacts, etc., not just specific source code types. Do not ignore files just because virtual environments are also present. Use `tree` for a hierarchical view if needed.
+*   **Handling Explanations:** 
+    *   If the user asks *how* to do something, asks for an explanation, or requests instructions (like "how do I run this?"), **provide the explanation or instructions directly in a text response** using clear Markdown formatting.
+    *   **Proactive Assistance:** When providing instructions that culminate in a specific execution command (like `python file.py`, `npm start`, `git status | cat`, etc.), first give the full explanation, then **explicitly ask the user if they want you to run that final command** using the `execute_command` tool. 
+        *   Example: After explaining how to run `calculator.py`, you should ask: "Would you like me to run `python calculator.py | cat` for you using the `execute_command` tool?" (Append `| cat` for commands that might page).
+    *   Do *not* use `task_complete` just for providing information; only use it when the *underlying task* (e.g., file creation, modification) is fully finished.
 *   **Planning First:** For tasks requiring multiple steps (e.g., read file, modify content, write file), explain your plan briefly in text *before* the first function call.
 *   **Precise Edits:** When editing files (`edit` tool), prefer viewing the relevant section first (`view` tool with offset/limit), then use exact `old_string`/`new_string` arguments if possible. Only use the `content` argument for creating new files or complete overwrites.
-*   **Task Completion Signal:** ALWAYS finish by calling `task_complete(summary=...)`. 
+*   **Task Completion Signal:** ALWAYS finish action-oriented tasks by calling `task_complete(summary=...)`. 
     *   The `summary` argument MUST accurately reflect the final outcome (success, partial success, error, or what was done).
     *   Format the summary using **Markdown** for readability (e.g., use backticks for filenames `like_this.py` or commands `like this`).
     *   If code was generated or modified, the summary SHOULD include concise instructions on how to run or test it (e.g., necessary commands in Markdown code blocks).

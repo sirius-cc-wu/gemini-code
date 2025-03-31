@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: gemini-code
-Version: 0.1.98
+Version: 0.1.102
 Summary: An AI coding assistant CLI using Google's Gemini models with function calling.
 Author-email: Raiza Martin <raiza@huxe.ai>
 License-Expression: MIT

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gemini-code" 
-version = "0.1.98"  
+version = "0.1.102"  
 authors = [
   { name="Raiza Martin", email="raiza@huxe.ai" }
 ]
