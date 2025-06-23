@@ -155,18 +155,25 @@ def start_interactive_session(model_name: str, console: Console):
     # --- Session Start Message ---
     console.print("Type '/help' for commands, '/exit' or Ctrl+C to quit.")
 
+    # --- Command mapping for interactive mode ---
+    interactive_commands = {
+        "/exit": lambda: True, # Return True to signal exit
+        "/help": show_help,
+    }
+    # ---
+
     while True:
         try:
             user_input = console.input("[bold blue]You:[/bold blue] ")
+            command_func = interactive_commands.get(user_input.lower())
 
-            if user_input.lower() == '/exit': break
-            elif user_input.lower() == '/help': show_help(); continue
+            if command_func:
+                if command_func(): break # Break if the command signals an exit
+                else: continue # Otherwise, continue to next prompt
 
-            # Display initial "thinking" status - generate handles intermediate ones
             response_text = model.generate(user_input)
 
-            if response_text is None and user_input.startswith('/'): console.print(f"[yellow]Unknown command:[/yellow] {user_input}"); continue
-            elif response_text is None: console.print("[red]Received an empty response from the model.[/red]"); log.warning("generate() returned None unexpectedly."); continue
+            if response_text is None: console.print("[red]Received an empty response from the model.[/red]"); log.warning("generate() returned None unexpectedly."); continue
 
             console.print("[bold medium_purple]Gemini:[/bold medium_purple]")
             console.print(Markdown(response_text), highlight=True)
