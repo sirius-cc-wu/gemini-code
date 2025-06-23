@@ -24,12 +24,11 @@ class CreateDirectoryTool(BaseTool):
             A success or error message.
         """
         try:
-            # Basic path safety
-            if ".." in dir_path.split(os.path.sep):
-                 log.warning(f"Attempted to access parent directory in create_directory path: {dir_path}")
-                 return f"Error: Invalid path '{dir_path}'. Cannot access parent directories."
-
-            target_path = os.path.abspath(os.path.expanduser(dir_path))
+            # Resolve the path to an absolute path to prevent directory traversal
+            target_path = os.path.abspath(os.path.join(os.getcwd(), dir_path))
+            if not target_path.startswith(os.getcwd()):
+                log.warning(f"Attempted directory traversal in create_directory path: '{dir_path}' resolved to '{target_path}'")
+                return f"Error: Invalid path '{dir_path}'. Path is outside the current workspace."
             log.info(f"Attempting to create directory: {target_path}")
 
             if os.path.exists(target_path):
@@ -67,12 +66,12 @@ class LsTool(BaseTool):
         """Executes the 'ls -lA' command."""
         target_path = "."  # Default to current directory
         if path:
-            # Basic path safety - prevent navigating outside workspace root if needed
-            # For simplicity, assuming relative paths are okay for now
-            target_path = os.path.normpath(path) # Normalize path
-            if target_path.startswith(".."):
-                 log.warning(f"Attempted to access parent directory in ls path: {path}")
-                 return f"Error: Invalid path '{path}'. Cannot access parent directories."
+            # Resolve the path to an absolute path to prevent directory traversal
+            abs_path = os.path.abspath(os.path.join(os.getcwd(), path))
+            if not abs_path.startswith(os.getcwd()):
+                log.warning(f"Attempted directory traversal in ls path: '{path}' resolved to '{abs_path}'")
+                return f"Error: Invalid path '{path}'. Path is outside the current workspace."
+            target_path = path
 
         command = ['ls', '-lA', target_path]
         log.info(f"Executing ls command: {' '.join(command)}")
