@@ -42,7 +42,7 @@ class TreeTool(BaseTool):
             # Clamp depth to be within reasonable limits
             depth_limit = max(1, min(depth, MAX_TREE_DEPTH))
             
-        command = ['tree', f'-L {depth_limit}']
+        command = ['tree', '-L', str(depth_limit)]
         
         # Add path if specified
         target_path = "." # Default to current directory
