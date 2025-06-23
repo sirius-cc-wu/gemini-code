@@ -301,6 +301,10 @@ class GeminiModel:
                                     tool_instance = get_tool(tool_name)
                                     if tool_instance:
                                         log.debug(f"Executing tool '{tool_name}' with arguments: {tool_args}")
+                                        # --- Dependency Injection for Tools that need the model ---
+                                        if tool_name == "summarize_code":
+                                            tool_args['model_instance'] = self.model
+                                        # ---
                                         tool_result = tool_instance.execute(**tool_args)
                                         log.info(f"Tool '{tool_name}' executed. Result length: {len(str(tool_result)) if tool_result else 0}")
                                         log.debug(f"Tool '{tool_name}' result: {str(tool_result)[:500]}...")

@@ -27,29 +27,32 @@ class SummarizeCodeTool(BaseTool):
     """
     name = "summarize_code"
     description = "Provides a summary of a code file's purpose, key functions/classes, and structure. Use for large files or when only an overview is needed."
+    args_schema: dict = {
+        "file_path": {
+            "type": "string",
+            "description": "The path to the code file to be summarized.",
+        }
+    }
+    required_args: list[str] = ["file_path"]
 
-    def __init__(self, model_instance: genai.GenerativeModel | None = None):
+    def __init__(self):
         """
-        Requires the initialized Gemini model instance for performing summarization.
-        (This implies the tool needs access to the model from the main class)
+        Initializes the SummarizeCodeTool.
         """
         super().__init__()
-        # This creates a dependency: the tool needs the model.
-        # We'll need to modify how tools are instantiated or pass the model reference.
-        self.model = model_instance
 
-    def execute(self, file_path: str | None = None, directory_path: str | None = None, query: str | None = None, glob_pattern: str | None = None) -> str:
+    def execute(self, file_path: str, model_instance: genai.GenerativeModel) -> str:
         """
-        Summarizes code based on path, directory, or query.
+        Summarizes a code file. For small files, it returns the full content.
         # ... (rest of docstring)
         """
         log.debug(f"[SummarizeCodeTool] Current working directory: {os.getcwd()}")
-        log.info(f"SummarizeCodeTool called with file='{file_path}', dir='{directory_path}', query='{query}', glob='{glob_pattern}'")
+        log.info(f"SummarizeCodeTool called with file='{file_path}'")
 
-        if not self.model:
+        if not model_instance:
              # This check is important if the model wasn't passed during init
              log.error("SummarizeCodeTool cannot execute: Model instance not provided.")
-             return "Error: Summarization tool not properly configured (missing model instance)."
+             return "Error: Summarization tool not properly configured (model instance was not provided to execute method)."
 
         try:
             # Basic path safety
@@ -107,7 +110,7 @@ class SummarizeCodeTool(BaseTool):
                     # Make the internal LLM call for summarization
                     # Use a simpler generation config? No tools needed here.
                     summary_config = genai.types.GenerationConfig(temperature=0.3) # Low temp for factual summary
-                    summary_response = self.model.generate_content(
+                    summary_response = model_instance.generate_content(
                         contents=[
                              # Provide system prompt separately if API supports it, otherwise prepend
                              {'role': 'user', 'parts': [SUMMARIZATION_SYSTEM_PROMPT, summarization_prompt]}
